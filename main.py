@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 
-MIN_CHOICE, MAX_CHOICE = 1, 4
+MIN_CHOICE, MAX_CHOICE = 1, 5
 
 PATH = Path('./todo.txt')       # Path fo .txt file
 FILE_NAME = 'todo.txt'          # File name
@@ -15,8 +15,19 @@ def print_greeting() -> None:
 1. Display To-Do List
 2. Add Task
 3. Remove Task
-4. Quit
+4. Clear all tasks
+5. Quit
 ''')
+
+
+def clear_file() -> None:
+    """Initially clears the .txt file"""
+    open(FILE_NAME, 'w').close()
+
+
+def clear_to_do_list() -> None:
+    list_to_do.clear()
+    print('All items were deleted!')
 
 
 def select_user_choice() -> bool:
@@ -30,6 +41,7 @@ def select_user_choice() -> bool:
     except ValueError:
         print('You entered not a number! Try again')
         select_user_choice()
+        return True
 
 
 def handle_user_choice(select: int) -> bool:
@@ -41,7 +53,10 @@ def handle_user_choice(select: int) -> bool:
             add_task_to_list()
         case 3:     # Remove task
             remove_task_from_list()
-        case 4:     # Quit
+        case 4:     # Clear all tasks
+            clear_file()
+            clear_to_do_list()
+        case 5:     # Quit
             print('Goodbye!')
             return False
     return True
@@ -53,7 +68,7 @@ def display_to_do_list() -> None:
         print('There are no entries in the file!')
         return
     if os.stat(FILE_NAME).st_size == 0:     # Check file is empty
-        print('\nTo-Do List: (Empty)')
+        print('To-Do List: (Empty)')
         return
     print('\nTo-Do List:')
     i = 1
@@ -77,9 +92,6 @@ def add_task_to_list() -> None:
 
 def remove_task_from_list() -> None:
     """Remove the existing task from file"""
-    if not list_to_do:
-        print('You have no items in to-do list!')
-        return
     try:
         task = int(input('Enter the task number to remove: '))
         if 0 < task <= len(list_to_do):
@@ -102,5 +114,6 @@ def remove_task_from_list() -> None:
 
 if __name__ == '__main__':
     print_greeting()
+    clear_file()
     while select_user_choice():
         pass
