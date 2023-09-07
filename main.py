@@ -2,11 +2,18 @@
 import os
 from pathlib import Path
 
+# Integer constants for choosing options in main menu
 MIN_CHOICE, MAX_CHOICE = 1, 5
 
-PATH = Path('./todo.txt')       # Path fo .txt file
-FILE_NAME = 'todo.txt'          # File name
-list_to_do = []                 # List to do for handling file
+# String constants for task status
+UNFULFILLED = "unfulfilled"
+FULFILLED = "fulfilled"
+
+counter = 1                           # Counter for items in list
+
+PATH = Path('./json/todo.json')       # Path fo .json file
+FILE_NAME = 'json/todo.json'          # File name
+dict_to_do = {}                       # Dictionary to do for handling file
 
 
 def print_greeting() -> None:
@@ -21,12 +28,12 @@ def print_greeting() -> None:
 
 
 def clear_file() -> None:
-    """Initially clears the .txt file"""
+    """Initially clears the .json file"""
     open(FILE_NAME, 'w').close()
 
 
 def clear_to_do_list() -> None:
-    list_to_do.clear()
+    dict_to_do.clear()
     print('All items were deleted!')
 
 
@@ -80,12 +87,13 @@ def display_to_do_list() -> None:
 
 
 def add_task_to_list() -> None:
-    """Add a new task to file 'todo.txt'"""
+    """Add a new task to file 'todo.json'"""
     task = input('Enter the task to add: ')
-    if task not in list_to_do:
-        with open(FILE_NAME, 'a') as file:
-            file.write(f'{task}\n')
-        list_to_do.append(task)
+    if task not in dict_to_do.values():
+        print('Yes')
+        # with open(FILE_NAME, 'a') as file:
+        #     file.write(f'{task}\n')
+        dict_to_do[counter] = [task, UNFULFILLED]
     else:
         print('This entry is already in list!')
 
@@ -94,9 +102,9 @@ def remove_task_from_list() -> None:
     """Remove the existing task from file"""
     try:
         task = int(input('Enter the task number to remove: '))
-        if 0 < task <= len(list_to_do):
-            element_for_delete = list_to_do[task - 1]
-            del list_to_do[task - 1]
+        if 0 < task <= len(dict_to_do):
+            element_for_delete = dict_to_do[task - 1]
+            del dict_to_do[task - 1]
             # Remove from file
             with open(FILE_NAME, 'r') as file:
                 lines = file.readlines()
