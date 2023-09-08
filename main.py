@@ -1,42 +1,10 @@
 #!/usr/bin/python3
-import json
 import os
-from pathlib import Path
+import json
+from service import *
 
-# Integer constants for choosing options in main menu
-MIN_CHOICE, MAX_CHOICE = 1, 7
-
-# String constants for task status and messages
-WRONG_TASK = 'You entered the wrong task number! Try again'
-EMPTY_LIST = 'To-Do List: (Empty)'
-UNFULFILLED = 'unfulfilled'
-FULFILLED = 'fulfilled'
-
-counter = 1  # Counter for items in list
-
-PATH = Path('./json/todo.json')  # Path fo .json file
-FILE_NAME = 'json/todo.json'  # File name
-dict_to_do = {}  # Dictionary to do for handling file
-
-
-def print_greeting() -> None:
-    """Prints the greeting from the programme"""
-    print('''=== To-Do List Manager ===
-1. Display To-Do List
-2. Add Task
-3. Mark task as fulfilled
-4. Remove task via number
-5. Remove all fulfilled tasks
-6. Clear all tasks
-7. Quit
-
-Also you may type "menu" anytime to show this info again
-''')
-
-
-def clear_file() -> None:
-    """Initially clears the .json file"""
-    open(FILE_NAME, 'w').close()
+counter = 1         # Counter for items in list
+dict_to_do = {}     # Dictionary to do for handling file
 
 
 def clear_to_do_dict() -> None:
@@ -58,17 +26,6 @@ def write_dict_to_json_file() -> None:
     json_object = json.dumps(dict_to_do)
     with open(FILE_NAME, 'w') as file:
         file.write(json_object)
-
-
-def print_dict(tasks: dict) -> None:
-    """Prints all current items"""
-    print('\nTo-Do List:')
-    i = 1
-    while tasks.get(str(i)):
-        task, status = tasks[str(i)][0], tasks[str(i)][1]
-        print(f'{i}. {task} ({status})')
-        i += 1
-    print()
 
 
 def select_user_choice() -> bool:
@@ -182,13 +139,14 @@ def remove_fulfilled_tasks() -> None:
         el for el in dict_to_do.values() if el[1] == FULFILLED
     ]
     counter -= len(items_for_remove)
-    dict_to_do = {k:v for k, v in dict_to_do.items() if v not in items_for_remove}
+    dict_to_do = {k: v for k, v in dict_to_do.items() if v not in items_for_remove}
     write_dict_to_json_file()
     print('All fulfilled tasks has been removed!')
 
 
 if __name__ == '__main__':
     print_greeting()
+    print_menu_hint()
     clear_file()
     while select_user_choice():
         pass
