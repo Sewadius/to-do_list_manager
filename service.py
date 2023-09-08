@@ -10,9 +10,8 @@ EMPTY_LIST = 'To-Do List: (Empty)'
 UNFULFILLED = 'unfulfilled'
 FULFILLED = 'fulfilled'
 
-# Path and file name constants
-PATH = Path('./json/todo.json')  # Path fo .json file
-FILE_NAME = 'json/todo.json'  # File name
+JSON_PATH = 'json/todo.json'    # File name
+PATH = Path(JSON_PATH)          # Path fo .json file
 
 
 def print_greeting() -> None:
@@ -34,7 +33,7 @@ def print_menu_hint() -> None:
 
 def clear_file() -> None:
     """Initially clears the .json file"""
-    open(FILE_NAME, 'w').close()
+    open(JSON_PATH, 'w').close()
 
 
 def print_dict(tasks: dict) -> None:

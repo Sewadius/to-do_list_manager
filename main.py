@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+import sys
 import json
 from service import *
 
@@ -24,7 +25,7 @@ def clear_all() -> None:
 def write_dict_to_json_file() -> None:
     """Writes local dictionary to json file"""
     json_object = json.dumps(dict_to_do)
-    with open(FILE_NAME, 'w') as file:
+    with open(JSON_PATH, 'w') as file:
         file.write(json_object)
 
 
@@ -63,17 +64,17 @@ def handle_user_choice(select: int) -> bool:
             clear_all()
         case 7:  # Quit
             print('Goodbye!')
-            return False
+            sys.exit(0)
     return True
 
 
 def display_to_do_list() -> None:
     """Reading form json file and show all entries"""
-    if os.stat(FILE_NAME).st_size == 0:     # Check file is empty
+    if os.stat(JSON_PATH).st_size == 0:     # Check file is empty
         print(EMPTY_LIST)
         return
 
-    with open(FILE_NAME, 'r') as file:
+    with open(JSON_PATH, 'r') as file:
         json_object = json.load(file)
         if not json_object:
             print(EMPTY_LIST)
