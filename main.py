@@ -95,7 +95,7 @@ def add_task_to_list() -> None:
     counter += 1
 
 
-def mark_as_fulfilled():
+def mark_as_fulfilled() -> None:
     """Mark a task as fulfilled in list"""
     try:
         task = int(input('Enter the task number to mark as fulfilled: '))
